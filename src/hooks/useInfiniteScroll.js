@@ -28,6 +28,8 @@ const useInfiniteScroll = (callback, hasMore) => {
 
     return () => observer.disconnect();
   }, [hasMore]);
+
+  return ref;
 };
 
 export default useInfiniteScroll;
