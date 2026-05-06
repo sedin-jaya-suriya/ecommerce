@@ -1,5 +1,4 @@
-// Delays input updates to reduce unnecessary API calls.
-// Used mainly for optimizing search functionality.
+
 
 import { useState, useEffect } from "react";
 
