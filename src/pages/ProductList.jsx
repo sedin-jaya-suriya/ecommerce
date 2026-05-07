@@ -13,12 +13,10 @@ export default function ProductList() {
   const { items, displayedItems, filteredItems, status } = useSelector((s) => s.products);
   const { search, category, view } = useSelector((s) => s.ui);
 
-  // Fetch products on mount
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // Recompute filteredItems & reset pagination whenever search/category/items change
   useEffect(() => {
     const filtered = items
       .filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
@@ -26,15 +24,12 @@ export default function ProductList() {
     dispatch(setFilteredItems(filtered));
   }, [items, search, category, dispatch]);
 
-  // Whether there are more products to load
   const hasMore = displayedItems.length < filteredItems.length;
 
-  // Sentinel callback — loads the next page
   const handleLoadMore = useCallback(() => {
     dispatch(loadMore());
   }, [dispatch]);
 
-  // sentinelRef is attached to a standalone div BELOW all products
   const sentinelRef = useInfiniteScroll(handleLoadMore, hasMore);
 
   if (status === "loading") return <div style={{ padding: 20 }}>Loading products...</div>;
@@ -50,14 +45,12 @@ export default function ProductList() {
         ))}
       </div>
 
-      {/* Sentinel: invisible div below all cards — observed by IntersectionObserver */}
       {hasMore && (
         <div ref={sentinelRef} style={{ height: "1px", margin: "0" }} />
       )}
 
-      {/* Status message */}
       <p style={{ textAlign: "center", padding: "16px", color: "#888" }}>
-        {hasMore ? "Loading more products..." : "✅ All products loaded"}
+        {hasMore ? "Loading more products..." : "All products loaded"}
       </p>
     </>
   );
